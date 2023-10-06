@@ -22,15 +22,15 @@ namespace BetterHints.Commands
             Utilities Utilities = Main.Singleton.Utilities;
             Player player = Player.Get(sender);
 
-            Utilities.ShowBetterHint(player);
+            Utilities.UpdateBetterHint(player);
 
 
             List<string> args = arguments.Array.ToList<string>();
-            HintElement hintElement = new HintElement(args[1], 10, int.Parse(args[2]));
+            HintElement hintElement = new HintElement(args[1], 10, int.Parse(args[2]), newLineHeight: int.Parse(args[3]));
 
             Utilities.AddBetterHint(player, hintElement);
 
-            Utilities.ShowBetterHint(player);
+            Utilities.UpdateBetterHint(player);
 
             response = $"Executing the command... ({args[1]} {args[2]})";
             

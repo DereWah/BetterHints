@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API.cs" />
     <Compile Include="Commands\HintDebug.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Main.cs" />

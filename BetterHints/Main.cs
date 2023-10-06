@@ -20,7 +20,7 @@ namespace BetterHints
         public override string Prefix => "BetterHints";
         public override PluginPriority Priority => PluginPriority.Medium;
 
-        public static Main Singleton;
+        internal static Main Singleton;
 
         public Dictionary<string, List<HintElement>> PlayerHints = new Dictionary<string, List<HintElement>>();
         public Utilities Utilities;
