@@ -33,10 +33,10 @@ namespace BetterHints.Utils
         {
             List<HintElement> CurrentHints = GetPlayerHints(player);
 
-            if (hintElement.Breaks != null)
-            {
-                foreach (HintElement he in hintElement.Breaks) AddBetterHint(player, he);
-            }
+            //if (hintElement.Breaks != null)
+            //{
+            //    foreach (HintElement he in hintElement.Breaks) AddBetterHint(player, he);
+            //}
 
             CurrentHints.Add(hintElement);
             UpdateBetterHint(player);
@@ -44,10 +44,6 @@ namespace BetterHints.Utils
                 if (CurrentHints.Contains(hintElement))
                 {
                     CurrentHints.Remove(hintElement);
-                    if(hintElement.Breaks != null)
-                    {
-                        foreach (HintElement he in hintElement.Breaks) CurrentHints.Remove(he);
-                    }
                     UpdateBetterHint(player);
                 }
             });
@@ -84,7 +80,11 @@ namespace BetterHints.Utils
             string result = string.Empty;
             foreach (HintElement he in CurrentHints)
             {
-                result += $"<line-height=0px>\n</line-height><voffset={he.VerticalOffset}px>" + he.Result + "</voffset>";
+                //The space at the end of the string is SUPER IMPORTANT! If removed, TMP will skip completely
+                result += $"<line-height={he.VerticalOffset}>\n"
+                    + he.Result
+                    + $"<line-height={-(he.VerticalOffset + he.getHintHeight())}>\n"
+                    + " ";
             }
             Log.Info(result);
             return result;

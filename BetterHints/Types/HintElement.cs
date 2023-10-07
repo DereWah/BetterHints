@@ -22,7 +22,7 @@ namespace BetterHints.Types
         /// <summary>
         /// Gets the multiple HintElements the original hint will be split into if it has multiple lines.
         /// </summary>
-        public List<HintElement> Breaks { get; }
+        public string[] Breaks { get; }
 
         /// <summary>
         /// Gets the vertical position of the hint from the baseline.
@@ -45,6 +45,15 @@ namespace BetterHints.Types
         public float Duration { get; }
 
         /// <summary>
+        /// Get the total vertical length this hint occupies.
+        /// </summary>
+        /// <returns></returns>
+        public int getHintHeight()
+        {
+            return (Breaks.Length - 1) * NewLineHeight;
+        }
+
+        /// <summary>
         /// Creates a HintElement instance.
         /// </summary>
         /// <param name="content">The text of the hint.</param>
@@ -56,27 +65,20 @@ namespace BetterHints.Types
         {
             Duration = duration;
             RawHint = content;
-            VerticalOffset = vOffset;
+            VerticalOffset = -vOffset;
             HorizontalOffset = hOffset;
             NewLineHeight = newLineHeight;
-            string[] Lines = content.Split(new string[] { "\\n" }, StringSplitOptions.None);
+            Breaks = content.Split(new string[] { "\\n" }, StringSplitOptions.None);
 
-            if (Lines.Any())
+            if (Breaks.Any())
             {
-                Breaks = new List<HintElement>();
-                //If the content is split across multiple lines, we create multiple hints and offset them below the line above.
-                for (int i = 1; i < Lines.Length; i++)
-                {
-                    HintElement h = new HintElement(Lines[i], duration, vOffset - i * newLineHeight);
-                    Breaks.Add(h);
-                }
-                Result = Lines.First();
+                Result = string.Join($"<line-height={newLineHeight}px>\n", Breaks);
             }
             else
             {
                 Result = content;
             }
-            Result = $"<align=left><pos={hOffset}px>" + Result + "</pos></align>";
+            if (hOffset != 0) Result = $"<align=left><pos={hOffset}px>" + Result + "</pos></align>";
         }
     }
 }
