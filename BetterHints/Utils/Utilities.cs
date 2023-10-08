@@ -31,22 +31,32 @@ namespace BetterHints.Utils
         /// <param name="hintElement">The hint to show to the player.</param>
         public void AddBetterHint(Player player, HintElement hintElement)
         {
-            List<HintElement> CurrentHints = GetPlayerHints(player);
+            List<HintElement> currentHints = GetPlayerHints(player);
 
-            //if (hintElement.Breaks != null)
-            //{
-            //    foreach (HintElement he in hintElement.Breaks) AddBetterHint(player, he);
-            //}
-
-            CurrentHints.Add(hintElement);
+            currentHints.Add(hintElement);
             UpdateBetterHint(player);
-            Timing.CallDelayed(hintElement.Duration, () => {
-                if (CurrentHints.Contains(hintElement))
-                {
-                    CurrentHints.Remove(hintElement);
-                    UpdateBetterHint(player);
-                }
-            });
+            if(hintElement.Duration >= 0)
+            {
+                Timing.CallDelayed(hintElement.Duration, () => {
+                    if (currentHints.Contains(hintElement))
+                    {
+                        currentHints.Remove(hintElement);
+                        UpdateBetterHint(player);
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// Removes a Hint from the player's screen.
+        /// </summary>
+        /// <param name="player">The player to remove the hint from.</param>
+        /// <param name="hintElement">The hint to remove.</param>
+        public void RemoveBetterHint(Player player, HintElement hintElement)
+        {
+            List<HintElement> currentHints = GetPlayerHints(player);
+            currentHints.Remove(hintElement);
+            UpdateBetterHint(player);
         }
 
         /// <summary>
